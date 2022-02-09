@@ -45,7 +45,7 @@ curl --location --request POST 'http://127.0.0.1:5000/process' \
 ### Response:
 
 
-{
+```{
     "overweight_persons_count": 1,  ## Counts the overweighted persons.
     "result": [  					## result has the said BMI output for the given json file.
         {
@@ -80,7 +80,7 @@ curl --location --request POST 'http://127.0.0.1:5000/process' \
         }
     ]
 }
-
+```
 
 
 
