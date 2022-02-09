@@ -1,5 +1,5 @@
 import pytest
-from app.app import BMICalculator
+from app import BMICalculator
 
 
 def test_calculate_bmi():
