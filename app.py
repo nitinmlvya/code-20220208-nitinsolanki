@@ -85,10 +85,15 @@ class BMICalculator():
 
 
 @app.route('/', methods = ['POST'])
-def hello_world():
+def bmi_service():
 	calc = BMICalculator()
 	calc.run()
 	return str(calc.overweight_persons_count)
+
+
+@app.route('/health_check', methods = ['GET'])
+def health_check():
+	return 'health check is done.'
 
 
 
