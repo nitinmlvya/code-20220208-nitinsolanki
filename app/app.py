@@ -1,7 +1,6 @@
-import time
 import json
 import pandas as pd
-from typing import List, Dict, Tuple
+from typing import Tuple
 from tqdm import tqdm
 from flask import Flask
 
@@ -9,11 +8,10 @@ app = Flask(__name__)
 
 
 health_risk_bmi_data = {
-	"BMI_category": ["Underweight", "Normal weight", "Overweight", "Moderately obese", "Severely obese", "Very severely obese"],
-	"BMI_range": [(None, 18.4), (18.4, 24.9), (24.9, 29.9), (29.9, 34.9), (34.9, 39.9), (39.9, None)],
-	"health_risk": ["Malnutrition risk", "Low risk", "Enhanced risk", "Medium risk", "High risk", "Very high risk"]
+	"BMI_category":["Underweight", "Normal weight", "Overweight", "Moderately obese", "Severely obese", "Very severely obese"],
+	"BMI_range":[(None, 18.4), (18.4, 24.9), (24.9, 29.9), (29.9, 34.9), (34.9, 39.9), (39.9, None)],
+	"health_risk":["Malnutrition risk", "Low risk", "Enhanced risk", "Medium risk", "High risk", "Very high risk"]
 }
-
 
 
 class BMICalculator():
