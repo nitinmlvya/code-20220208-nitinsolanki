@@ -1,5 +1,4 @@
 from typing import Tuple, List, Dict
-import uuid
 import pandas as pd
 from tqdm import tqdm
 
@@ -14,9 +13,8 @@ health_risk_bmi_data = {
 class BMICalculator():
 	def __init__(self) -> None:
 		self.input_json_file = 'test_data.json'
-		self.output_csv_file = f'output/result_{uuid.uuid4().hex}.csv'
 
-		self.person_bmi_details = {'BMI': [], 'health_risk': [], 'BMI_category': []}
+		self.person_bmi_details = [] 
 		self.overweight_persons_count = 0
 
 
@@ -54,11 +52,6 @@ class BMICalculator():
 					return health_risk_bmi_data['health_risk'][i], health_risk_bmi_data['BMI_category'][i]
 
 
-	def save_details(self):
-		df = pd.DataFrame(self.person_bmi_details)
-		df.to_csv(self.output_csv_file, index=False)
-		print(f'Output saved to file : {self.output_csv_file}')
-
 
 	def run(self, data_json: List[Dict]) -> None:
 		"""
@@ -69,11 +62,7 @@ class BMICalculator():
 			bmi = self.calculate_bmi(person['WeightKg'], person['HeightCm'])
 			health_risk, bmi_category = self.get_health_risk_and_bmi_category(bmi)
 
-			self.person_bmi_details['BMI'].append(bmi)
-			self.person_bmi_details['health_risk'].append(health_risk)
-			self.person_bmi_details['BMI_category'].append(bmi_category)
+			self.person_bmi_details.append({'BMI': bmi, 'health_risk': health_risk, 'BMI_category': bmi_category})
 
 			if bmi_category == health_risk_bmi_data['BMI_category'][2]:
 				self.overweight_persons_count += 1
-
-		self.save_details()

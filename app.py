@@ -14,7 +14,7 @@ def bmi_service():
 	data_json = json.load(file_)
 	calc = BMICalculator()
 	calc.run(data_json)
-	return {'calcuated_bmi_output_file': calc.output_csv_file, 'overweight_persons_count': calc.overweight_persons_count} 
+	return {'overweight_persons_count': calc.overweight_persons_count, 'result': calc.person_bmi_details} 
 
 
 @app.route('/health_check', methods = ['GET'])
@@ -25,7 +25,6 @@ def health_check():
 @app.route('/', methods = ['GET'])
 def welcome():
 	return 'Welcome to BMI Calculator...'
-
 
 
 if __name__=='__main__':
