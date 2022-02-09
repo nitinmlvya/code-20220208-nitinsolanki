@@ -1,8 +1,10 @@
 import json
 import pandas as pd
-from typing import Tuple
+from typing import Tuple, List, Dict
 from tqdm import tqdm
 from flask import Flask
+from flask import request
+import uuid
 
 app = Flask(__name__)
 
@@ -17,7 +19,7 @@ health_risk_bmi_data = {
 class BMICalculator():
 	def __init__(self) -> None:
 		self.input_json_file = 'test_data.json'
-		self.output_csv_file = 'test_output.csv'
+		self.output_csv_file = f'output/result_{uuid.uuid4().hex}.csv'
 
 		self.person_bmi_details = {'BMI': [], 'health_risk': [], 'BMI_category': []}
 		self.overweight_persons_count = 0
@@ -63,13 +65,11 @@ class BMICalculator():
 		print(f'Output saved to file : {self.output_csv_file}')
 
 
-	def run(self) -> None:
+	def run(self, data_json: List[Dict]) -> None:
 		"""
 		Main method to run the program and count the overweighted persons.
 		"""
-		print(f'Reading person details from file: {self.input_json_file}')
-		data_json = json.load(open(self.input_json_file))
-
+		
 		for person in tqdm(data_json, desc ="Calculating BMI..."):
 			bmi = self.calculate_bmi(person['WeightKg'], person['HeightCm'])
 			health_risk, bmi_category = self.get_health_risk_and_bmi_category(bmi)
@@ -84,16 +84,24 @@ class BMICalculator():
 		self.save_details()
 
 
-@app.route('/', methods = ['POST'])
+@app.route('/process', methods = ['POST'])
 def bmi_service():
+	print(f'Reading person details from file...')
+	file_ = request.files['input_data']
+	data_json = json.load(file_)
 	calc = BMICalculator()
-	calc.run()
-	return str(calc.overweight_persons_count)
+	calc.run(data_json)
+	return {'calcuated_bmi_output_file': calc.output_csv_file, 'overweight_persons_count': calc.overweight_persons_count} 
 
 
 @app.route('/health_check', methods = ['GET'])
 def health_check():
 	return 'health check is done.'
+
+
+@app.route('/', methods = ['GET'])
+def health_check():
+	return 'Welcome to BMI Calculator...'
 
 
 
